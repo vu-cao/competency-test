@@ -2,7 +2,6 @@ import scrapy
 from scrapy.selector import Selector
 from isentia.items import NewsItem
 from scrapy.conf import settings
-from scrapy import log
 
 class IsentiaSpider(scrapy.Spider):
     """ A spider for isentia competency test"""

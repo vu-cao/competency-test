@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-import scrapy
-import urlparse
 import re
 from isentia.items import NewsItem
 from scrapy.conf import settings
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy import log
 
 class IsentiaSpiderFollowlinksSpider(CrawlSpider):
     """ A spider for isentia competency test"""
@@ -36,20 +33,6 @@ class IsentiaSpiderFollowlinksSpider(CrawlSpider):
         self.response_url = response.url
         return self.parse_items(response)
 
-
-    def filter_links(self, links):
-        """ Method to convert relative url to absolute url
-        :param links: Links contained in the current response
-        :return: Filtered links
-        """
-        self.logger.info("FILTER_LINKS")
-        self.logger.info(self.response_url)
-
-        filtered_links = []
-        for link in links:
-            self.logger.info(link)
-            filtered_links.append(urlparse.urljoin(self.response_url, link))
-        return filtered_links
 
     def append(self, xPath):
         """ Method to append self.text into xPath
