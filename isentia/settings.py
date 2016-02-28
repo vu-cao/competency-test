@@ -83,3 +83,36 @@ NEWSPIDER_MODULE = 'isentia.spiders'
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# Set pipeline for scrapping.
+# MongoDBPipeline is used to save data into MongoDB
+ITEM_PIPELINES = ["isentia.pipelines.CleanupHTMLPipeline", "isentia.pipelines.MongoDBPipeline"]
+
+# MongoDB settings
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "isentia"
+MONGODB_COLLECTION = "news"
+
+# Settings for website
+# Domain
+WEB_DOMAIN = "bbc.com"
+# Urls to start
+WEB_START_URLS = ["http://www.bbc.com/news/election-us-2016-35649252",
+                  "http://www.bbc.com/news/world-middle-east-35674908"]
+
+# Settings for fields to be scrapped
+# This is the top level we will look into
+FIELD_ROOT_NODE = "//*/div[@class='column--primary']/div[@class='story-body']"
+# Node for headline
+FIELD_HEADLINE_NODE = ".//h1[@class='story-body__h1']"
+# Node for author
+FIELD_AUTHOR_NODE = ".//span[@class='byline__name']"
+# Node for date
+FIELD_DATE_NODE = ".//div[@class='story-body__mini-info-list-and-share']/ul/li[@class='mini-info-list__item']/div/@data-datetime"
+# Node for category
+FIELD_CATEGORY_NODE = ".//div[@class='story-body__mini-info-list-and-share']/ul/li[@class='mini-info-list__item']/a[@class='mini-info-list__section']"
+#Node for introduction
+FIELD_INTRODUCTION_NODE = ".//div[@class='story-body__inner']/p[@class='story-body__introduction']"
+# Node for content
+FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBody']/*[self::p|self::h1|self::h2|self::h3|self::h4][text()]"

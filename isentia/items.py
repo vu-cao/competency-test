@@ -8,7 +8,15 @@
 import scrapy
 
 
-class IsentiaItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class NewsItem(scrapy.Item):
+    domain = scrapy.Field()
+    link = scrapy.Field()
+    headline = scrapy.Field()
+    article = scrapy.Field()
+
+    date = scrapy.Field()
+    author = scrapy.Field()
+    content = scrapy.Field()
+    introduction = scrapy.Field()
+    category = scrapy.Field()
+
