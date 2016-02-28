@@ -84,7 +84,10 @@ NEWSPIDER_MODULE = 'isentia.spiders'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+DOWNLOAD_DELAY = 5
+
 # Set pipeline for scrapping.
+# CleanupHTMLPipeline is used to clean html tags in content
 # MongoDBPipeline is used to save data into MongoDB
 ITEM_PIPELINES = ["isentia.pipelines.CleanupHTMLPipeline", "isentia.pipelines.MongoDBPipeline"]
 
@@ -101,7 +104,7 @@ WEB_DOMAIN = "bbc.com"
 WEB_START_URLS = ["http://www.bbc.com/news/election-us-2016-35649252",
                   "http://www.bbc.com/news/world-middle-east-35674908"]
 
-# Settings for fields to be scrapped
+# Settings for fields to be scrapped. The settings are XPath expression
 # This is the top level we will look into
 FIELD_ROOT_NODE = "//*/div[@class='column--primary']/div[@class='story-body']"
 # Node for headline
@@ -116,3 +119,12 @@ FIELD_CATEGORY_NODE = ".//div[@class='story-body__mini-info-list-and-share']/ul/
 FIELD_INTRODUCTION_NODE = ".//div[@class='story-body__inner']/p[@class='story-body__introduction']"
 # Node for content
 FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBody']/*[self::p|self::h1|self::h2|self::h3|self::h4][text()]"
+
+# Settings for following links
+# Do you want to follow link?
+FOLLOW_LINK = True
+# Depth limit to follow links. 0 is unlimited
+DEPTH_LIMIT = 2
+# Patterns for following links. The pattern is in regular expression
+# FOLLOWING_LINK_PATTERNS = "\/news(\/.)*\/.+-\d{8}$"
+FOLLOWING_LINK_PATTERNS = "\/news\/.*\d{8}$"

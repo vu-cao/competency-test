@@ -22,7 +22,6 @@ class IsentiaSpider(scrapy.Spider):
 
     def parse(self, response):
         """ The overriden function to parse response
-
         :param response: Response to parse
         :return: NewsItem
         """
