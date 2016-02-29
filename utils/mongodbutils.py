@@ -3,6 +3,8 @@ import pymongo
 
 
 class MongoDBUtils(object):
+    """ Utility class to support operation with MongoDB """
+
     @classmethod
     def create_connection_string(cls, server, port, username, password):
         """ Create connection string from parameters

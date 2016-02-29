@@ -10,11 +10,15 @@ import responses
 
 class IsentiaSpiderTestCase(unittest.TestCase):
     def setUp(self):
+        self.response = response = responses.fake_response_from_file(
+            'fakeresponse.html', "http://www.bbc.com/news/election-us-2016-35649252")
         self.spider = IsentiaSpider()
 
     def test_parse_items(self):
-        response = responses.fake_response_from_file('fakeresponse.html', "http://www.bbc.com/news/election-us-2016-35649252")
-        results = self.spider.parse_items(response)
+        """ Test case for parse_items method
+        :return:
+        """
+        results = self.spider.parse_items(self.response)
         for item in results:
             self.assertEqual(item['domain'], "bbc.com", "Domain is not correct")
             self.assertEqual(item['link'], "http://www.bbc.com/news/election-us-2016-35649252", "Link is not correct")
@@ -26,6 +30,16 @@ class IsentiaSpiderTestCase(unittest.TestCase):
                              "Introduction is not correct")
             self.assertEqual(item['category'], "US Election 2016", "Category is not correct")
             self.assertIsNotNone(item['content'], "Content has to be not empty")
+
+    def test_get_base_domain(self):
+        """ Test case for get_base_domain method
+        :return:
+        """
+        url = "http://www.google.com.au/calendar"
+        self.assertEqual(self.spider.get_base_domain(url), "google.com.au", "Base domain is not correct")
+
+        url = "http://yahoo.com.au/test"
+        self.assertEqual(self.spider.get_base_domain(url), "yahoo.com.au", "Base domain is not correct")
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 import re
-import sys
-import os.path
 
-import scrapy
+from urlparse import urlparse
+
 from scrapy.conf import settings
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.selector import Selector
 
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
-from spiderutils.itemutils import ItemUtils
-
+from isentia.items import NewsLoader
+from isentia.items import NewsItem
 
 class IsentiaSpider(CrawlSpider):
     """ A spider for isentia competency test"""
@@ -44,7 +40,9 @@ class IsentiaSpider(CrawlSpider):
         :param response: response
         :return:
         """
-        return self.parse_items(response)
+
+        if settings['START_URLS_INCLUDED']:
+            return self.parse_items(response)
 
     def parse_items(self, response):
         """ The overriden function to parse response
@@ -56,6 +54,30 @@ class IsentiaSpider(CrawlSpider):
         selectors = Selector(response).xpath(settings['FIELD_ROOT_NODE'])
 
         for selector in selectors:
-            yield ItemUtils.parse(selector, response)
+            yield self.parse_response(selector, response)
 
+    def get_base_domain(self, url):
+        """
+        :param url: url used to retrieve base domain
+        :return: Base domain
+        """
+        base = urlparse(url).netloc
+        if base.upper().startswith("WWW."):
+            base = base[4:]
 
+        # drop any ports
+        base = base.split(':')[0]
+        return base
+
+    def parse_response(self, selector, response):
+        loader = NewsLoader(NewsItem(), selector)
+        loader.add_value('domain', self.get_base_domain(response.url))
+        loader.add_value('link', response.url)
+        loader.add_xpath('headline', settings['FIELD_HEADLINE_NODE'])
+        loader.add_xpath('author', settings['FIELD_AUTHOR_NODE'])
+        loader.add_xpath('date', settings['FIELD_DATE_NODE'])
+        loader.add_xpath('category', settings['FIELD_CATEGORY_NODE'])
+        loader.add_xpath('introduction', settings['FIELD_INTRODUCTION_NODE'])
+        loader.add_xpath('content', settings['FIELD_CONTENT_NODE'])
+
+        return loader.load_item()

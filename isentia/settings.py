@@ -125,8 +125,10 @@ FIELD_INTRODUCTION_NODE = ".//div[@class='story-body__inner']/p[@class='story-bo
 FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBody']/*[self::p|self::h1|self::h2|self::h3|self::h4][text()]"
 
 # Settings for following links
+# Do you want to scrap start_urls?
+START_URLS_INCLUDED = False
 # Do you want to follow link?
-FOLLOW_LINK = True
+FOLLOW_LINK = False
 # Depth limit to follow links. 0 is unlimited
 DEPTH_LIMIT = 2
 # Patterns for following links. The pattern is in regular expression
