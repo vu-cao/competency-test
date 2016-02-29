@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 import re
-from isentia.items import NewsItem
+import sys
+import os.path
+
 from scrapy.conf import settings
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
+from scrapy.selector import Selector
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from spiderutils.itemutils import ItemUtils
+
 
 class IsentiaSpiderFollowlinksSpider(CrawlSpider):
     """ A spider for isentia competency test"""
@@ -20,9 +28,10 @@ class IsentiaSpiderFollowlinksSpider(CrawlSpider):
     response_url = ""
 
     rules = (
-        Rule(LinkExtractor(allow=(re.compile(settings['FOLLOWING_LINK_PATTERNS']),)),
-             callback="parse_items",
-             follow=True),
+        Rule(LinkExtractor(
+            allow=(re.compile(settings['FOLLOWING_LINK_PATTERNS'], re.IGNORECASE),)),
+            callback="parse_items",
+            follow=settings['FOLLOW_LINK']),
     )
 
     def parse_start_url(self, response):
@@ -33,15 +42,6 @@ class IsentiaSpiderFollowlinksSpider(CrawlSpider):
         self.response_url = response.url
         return self.parse_items(response)
 
-
-    def append(self, xPath):
-        """ Method to append self.text into xPath
-
-        :param xPath: xPath to be appended
-        :return: Appended xPath
-        """
-        return xPath + self.text
-
     def parse_items(self, response):
         """ The overriden function to parse response
 
@@ -49,28 +49,8 @@ class IsentiaSpiderFollowlinksSpider(CrawlSpider):
         :return: NewsItem
         """
 
-        data = response.xpath(settings['FIELD_ROOT_NODE'])
+        selectors = Selector(response.xpath(settings['FIELD_ROOT_NODE']))
 
-        for d in data:
-            news = NewsItem()
+        for selector in selectors:
+            yield ItemUtils.parse(selector, response)
 
-            news['domain'] = self.allowed_domains
-            news['link'] = response.url
-            news['headline'] = d.xpath(self.append(settings['FIELD_HEADLINE_NODE'])).extract_first()
-
-            news['author'] = d.xpath(self.append(settings['FIELD_AUTHOR_NODE'])).extract_first()
-            news['date'] = d.xpath(settings['FIELD_DATE_NODE']).extract_first()
-
-            news['category'] = d.xpath(self.append(settings['FIELD_CATEGORY_NODE'])).extract_first()
-
-            news['introduction'] = d.xpath(self.append(settings['FIELD_INTRODUCTION_NODE'])).extract_first()
-
-            paragraphs = d.xpath(settings['FIELD_CONTENT_NODE'])
-            content = ""
-            for paragraph in paragraphs:
-                paragraph_content = paragraph.xpath(".").extract()[0]
-                content += paragraph_content + "\n"
-
-            news['content'] = content
-
-            return news

@@ -92,14 +92,19 @@ DOWNLOAD_DELAY = 5
 ITEM_PIPELINES = ["isentia.pipelines.CleanupHTMLPipeline", "isentia.pipelines.MongoDBPipeline"]
 
 # MongoDB settings
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
+# MONGODB_SERVER = "localhost"
+# MONGODB_PORT = 27017
+MONGODB_SERVER = "aws-us-east-1-portal.14.dblayer.com"
+# MONGODB_PORT = 27017
+MONGODB_PORT = 10208
 MONGODB_DB = "isentia"
 MONGODB_COLLECTION = "news"
+MONGODB_USER = "vucao"
+MONGODB_PASSWORD = "vucao-isentia"
 
 # Settings for website
 # Domain
-WEB_DOMAIN = "bbc.com"
+WEB_DOMAIN = ["bbc.com", ]
 # Urls to start
 WEB_START_URLS = ["http://www.bbc.com/news/election-us-2016-35649252",
                   "http://www.bbc.com/news/world-middle-east-35674908"]
