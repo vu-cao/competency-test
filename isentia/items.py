@@ -19,7 +19,6 @@ class NewsItem(scrapy.Item):
     domain = scrapy.Field()
     link = scrapy.Field()
     headline = scrapy.Field()
-    article = scrapy.Field()
 
     date = scrapy.Field()
     author = scrapy.Field()

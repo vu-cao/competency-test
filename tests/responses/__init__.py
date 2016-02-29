@@ -1,6 +1,6 @@
 import os
 
-from scrapy.http import Response, Request
+from scrapy.http import TextResponse, Request
 
 
 def fake_response_from_file(file_name, url=None):
@@ -23,6 +23,5 @@ def fake_response_from_file(file_name, url=None):
 
     file_content = open(file_path, 'r').read()
 
-    response = Response(url=url, request=request, body=file_content)
-    response.encoding = 'utf-8'
+    response = TextResponse(url=url, request=request, body=file_content, encoding='utf-8')
     return response

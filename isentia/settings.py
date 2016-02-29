@@ -126,7 +126,7 @@ FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBo
 
 # Settings for following links
 # Do you want to follow link?
-FOLLOW_LINK = False
+FOLLOW_LINK = True
 # Depth limit to follow links. 0 is unlimited
 DEPTH_LIMIT = 2
 # Patterns for following links. The pattern is in regular expression
