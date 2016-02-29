@@ -4,7 +4,7 @@ import os.path
 import unittest
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from isentia.spiders.IsentiaSpider import IsentiaSpider
+from isentia.spiders.isentiaspider import IsentiaSpider
 import responses
 
 
