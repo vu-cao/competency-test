@@ -24,7 +24,7 @@ class MongoDBUtils(object):
         :param port: MongoDB port number
         :param database: MongoDB database name
         :param collection: MongoDB collection name
-        :return: MOngoClient object
+        :return: MongoClient object
         """
         return pymongo.MongoClient(uri)
 
@@ -34,23 +34,18 @@ class MongoDBUtils(object):
         return db[collection]
 
     @classmethod
-    def search(cls, collection, domain, url):
+    def search(cls, collection, filters, sorts):
         """ Search MongoDB with input criteria
-        :param domain: Criteria to filter
-        :param url: Criteria to filter
-        :param collection: Collection to retrieve data from
+        :param collection: Collection to search
+        :param filters: Dictionary contains criteria to filter
+        :param sorts: List contains criteria to sort
         :return: List of JSON object
         """
 
         condition = {}
-        if domain:
-            condition['domain'] = {'$regex': domain}
-        if url:
-            condition['link'] = {'$regex': url}
+        for key in filters:
+            condition[key] = {'$regex': filters[key]}
 
-        cursor = collection.find(condition, {'_id': False}).sort([
-            ('date', pymongo.ASCENDING)
-        ])
+        cursor = collection.find(condition, {'_id': False}).sort(sorts)
 
-        print "Total records: %d" % cursor.count()
         return list(cursor)

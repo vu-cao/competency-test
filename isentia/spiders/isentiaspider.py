@@ -11,6 +11,7 @@ from scrapy.selector import Selector
 from isentia.items import NewsLoader
 from isentia.items import NewsItem
 
+
 class IsentiaSpider(CrawlSpider):
     """ A spider for isentia competency test"""
 

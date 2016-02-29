@@ -126,7 +126,7 @@ FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBo
 
 # Settings for following links
 # Do you want to scrap start_urls?
-START_URLS_INCLUDED = False
+START_URLS_INCLUDED = True
 # Do you want to follow link?
 FOLLOW_LINK = False
 # Depth limit to follow links. 0 is unlimited

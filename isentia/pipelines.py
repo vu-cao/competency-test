@@ -9,18 +9,15 @@ import sys
 import os.path
 import logging
 
-from lxml import html
-
 from scrapy.conf import settings
 from scrapy.exceptions import DropItem
-
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from utils.mongodbutils import MongoDBUtils
-from scrapy.utils.markup import remove_entities
 
-class MongoDBPipeline:
+
+class MongoDBPipeline(object):
     """ The pipeline to save data into MongoDB """
 
     def __init__(self):

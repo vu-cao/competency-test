@@ -3,7 +3,7 @@
 import sys
 import os.path
 import getopt
-
+import pymongo
 
 from bson.json_util import dumps
 
@@ -52,7 +52,13 @@ def main(argv=None):
     client = MongoDBUtils.connect(connection_string)
     collection = MongoDBUtils.get_collection(client, settings['MONGODB_DB'], settings['MONGODB_COLLECTION'])
 
-    print MongoDBUtils.search(collection, domain, url)
+    filters = {}
+    if domain:
+        filters.update({'domain': domain})
+    if url:
+        filters.update({'link': url})
+    sorts = [('date', pymongo.ASCENDING)]
+    print MongoDBUtils.search(collection, filters, sorts)
 
 
 if __name__ == "__main__":
