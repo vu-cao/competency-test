@@ -19,27 +19,29 @@ class IsentiaSpiderFollowlinksSpider(CrawlSpider):
     # Spider name
     name = "isentia_follow_links"
     # Domain to crawl
-    allowed_domains = [settings['WEB_DOMAIN']]
+    allowed_domains = settings['WEB_DOMAIN']
     # url to start
     start_urls = settings['WEB_START_URLS']
-    # xPath text
-    text = "/text()"
-    # url for the current response
-    response_url = ""
 
     rules = (
         Rule(LinkExtractor(
-            allow=(re.compile(settings['FOLLOWING_LINK_PATTERNS'], re.IGNORECASE),)),
+            allow=(re.compile(settings['FOLLOWING_LINK_PATTERNS']))),
             callback="parse_items",
-            follow=settings['FOLLOW_LINK']),
+            process_links="filter_links",
+            follow = True),
     )
+
+    def filter_links(self, links):
+        if not settings['FOLLOW_LINK']:
+            return []
+        else:
+            return links
 
     def parse_start_url(self, response):
         """ Override this method to include urls in start_urls
         :param response: response
         :return:
         """
-        self.response_url = response.url
         return self.parse_items(response)
 
     def parse_items(self, response):
@@ -49,8 +51,7 @@ class IsentiaSpiderFollowlinksSpider(CrawlSpider):
         :return: NewsItem
         """
 
-        selectors = Selector(response.xpath(settings['FIELD_ROOT_NODE']))
+        selectors = Selector(response).xpath(settings['FIELD_ROOT_NODE'])
 
         for selector in selectors:
             yield ItemUtils.parse(selector, response)
-

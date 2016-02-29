@@ -13,20 +13,22 @@ class MongoDBUtils(object):
         :return: Connection string which can be used later
         """
 
-        print port
         return "mongodb://" + username + ':' + password + '@' + server + ':' + str(port)
 
     @classmethod
-    def connect(cls, uri, db, collection):
+    def connect(cls, uri):
         """ Connect MongoDB with input parameters
         :param server: MongoDB server name
         :param port: MongoDB port number
         :param database: MongoDB database name
         :param collection: MongoDB collection name
-        :return: collection object
+        :return: MOngoClient object
         """
-        client = pymongo.MongoClient(uri)
-        db = client[db]
+        return pymongo.MongoClient(uri)
+
+    @classmethod
+    def get_collection(cls, client, database, collection):
+        db = client[database]
         return db[collection]
 
     @classmethod
@@ -44,7 +46,7 @@ class MongoDBUtils(object):
         if url:
             condition['link'] = {'$regex': url}
 
-        cursor = collection.find({'link': {'$regex': url}}, {'_id': False}).sort([
+        cursor = collection.find(condition, {'_id': False}).sort([
             ('date', pymongo.ASCENDING)
         ])
 

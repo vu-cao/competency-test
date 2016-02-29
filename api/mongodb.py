@@ -49,7 +49,8 @@ def main(argv=None):
     connection_string = MongoDBUtils.create_connection_string(
         settings['MONGODB_SERVER'], settings['MONGODB_PORT'],
         settings['MONGODB_USER'], settings['MONGODB_PASSWORD'])
-    collection = MongoDBUtils.connect(connection_string, settings['MONGODB_DB'], settings['MONGODB_COLLECTION'])
+    client = MongoDBUtils.connect(connection_string)
+    collection = MongoDBUtils.get_collection(client, settings['MONGODB_DB'], settings['MONGODB_COLLECTION'])
 
     print MongoDBUtils.search(collection, domain, url)
 

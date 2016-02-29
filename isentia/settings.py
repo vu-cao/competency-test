@@ -89,13 +89,12 @@ DOWNLOAD_DELAY = 5
 # Set pipeline for scrapping.
 # CleanupHTMLPipeline is used to clean html tags in content
 # MongoDBPipeline is used to save data into MongoDB
-ITEM_PIPELINES = ["isentia.pipelines.CleanupHTMLPipeline", "isentia.pipelines.MongoDBPipeline"]
+ITEM_PIPELINES = {"isentia.pipelines.MongoDBPipeline": 800}
 
 # MongoDB settings
 # MONGODB_SERVER = "localhost"
 # MONGODB_PORT = 27017
 MONGODB_SERVER = "aws-us-east-1-portal.14.dblayer.com"
-# MONGODB_PORT = 27017
 MONGODB_PORT = 10208
 MONGODB_DB = "isentia"
 MONGODB_COLLECTION = "news"
@@ -104,7 +103,7 @@ MONGODB_PASSWORD = "vucao-isentia"
 
 # Settings for website
 # Domain
-WEB_DOMAIN = ["bbc.com", ]
+WEB_DOMAIN = ['bbc.com']
 # Urls to start
 WEB_START_URLS = ["http://www.bbc.com/news/election-us-2016-35649252",
                   "http://www.bbc.com/news/world-middle-east-35674908"]
@@ -127,7 +126,7 @@ FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBo
 
 # Settings for following links
 # Do you want to follow link?
-FOLLOW_LINK = True
+FOLLOW_LINK = False
 # Depth limit to follow links. 0 is unlimited
 DEPTH_LIMIT = 2
 # Patterns for following links. The pattern is in regular expression
