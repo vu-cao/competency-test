@@ -21,7 +21,8 @@ class MongoDBPipeline(object):
     """ The pipeline to save data into MongoDB """
 
     def __init__(self):
-        pass
+        self.__client = None
+        self.__collection = None
 
     def open_spider(self, spider):
         """ Open connection when spider is opened
@@ -31,8 +32,8 @@ class MongoDBPipeline(object):
         connection_string = MongoDBUtils.create_connection_string(
             settings['MONGODB_SERVER'], settings['MONGODB_PORT'],
             settings['MONGODB_USER'], settings['MONGODB_PASSWORD'])
-        self.client = MongoDBUtils.connect(connection_string)
-        self.collection = MongoDBUtils.get_collection(self.client,
+        self.__client = MongoDBUtils.connect(connection_string)
+        self.__collection = MongoDBUtils.get_collection(self.__client,
                                                       settings['MONGODB_DB'], settings['MONGODB_COLLECTION'])
 
     def close_spider(self, spider):
@@ -40,7 +41,7 @@ class MongoDBPipeline(object):
         :param spider: The spider is closed
         :return:
         """
-        self.client.close()
+        self.__client.close()
 
     def process_item(self, item, spider):
         """ Overriden method to save item
@@ -55,8 +56,16 @@ class MongoDBPipeline(object):
             raise DropItem("Missing {0}!".item)
 
         if valid:
-            self.collection.update({'link': item['link']}, dict(item), upsert=True)
+            # Insert into MongoDB collection
+            self.__collection.insert(dict(item))
             logging.info("News added to MongoDB database!")
 
         return item
 
+    @property
+    def collection(self):
+        return self.__collection
+
+    @collection.setter
+    def collection(self, collection):
+        self.__collection = collection

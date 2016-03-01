@@ -103,7 +103,7 @@ MONGODB_PASSWORD = "vucao-isentia"
 
 # Settings for website
 # Domain
-WEB_DOMAIN = ['bbc.com']
+WEB_DOMAIN = ['bbc.com', 'bbc.co.uk']
 # Urls to start
 WEB_START_URLS = ["http://www.bbc.com/news/election-us-2016-35649252",
                   "http://www.bbc.com/news/world-middle-east-35674908"]
@@ -124,11 +124,12 @@ FIELD_INTRODUCTION_NODE = ".//div[@class='story-body__inner']/p[@class='story-bo
 # Node for content
 FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBody']/*[self::p|self::h1|self::h2|self::h3|self::h4][text()]"
 
+DATE_FORMAT = "%d %B %Y"
 # Settings for following links
 # Do you want to scrap start_urls?
-START_URLS_INCLUDED = True
+START_URLS_INCLUDED = False
 # Do you want to follow link?
-FOLLOW_LINK = False
+FOLLOW_LINK = True
 # Depth limit to follow links. 0 is unlimited
 DEPTH_LIMIT = 2
 # Patterns for following links. The pattern is in regular expression

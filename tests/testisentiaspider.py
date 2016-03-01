@@ -9,7 +9,11 @@ import responses
 
 
 class IsentiaSpiderTestCase(unittest.TestCase):
+    """ Test case for isentia spider """
     def setUp(self):
+        """ Setup test case data
+        :return:
+        """
         self.response = response = responses.fake_response_from_file(
             'fakeresponse.html', "http://www.bbc.com/news/election-us-2016-35649252")
         self.spider = IsentiaSpider()

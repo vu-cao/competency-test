@@ -42,6 +42,7 @@ class IsentiaSpider(CrawlSpider):
         :return:
         """
 
+        # If not include start urls, don't need to parse response from start_urls
         if settings['START_URLS_INCLUDED']:
             return self.parse_items(response)
 
@@ -58,7 +59,7 @@ class IsentiaSpider(CrawlSpider):
             yield self.parse_response(selector, response)
 
     def get_base_domain(self, url):
-        """
+        """ Return base domain from url
         :param url: url used to retrieve base domain
         :return: Base domain
         """
@@ -71,6 +72,11 @@ class IsentiaSpider(CrawlSpider):
         return base
 
     def parse_response(self, selector, response):
+        """ Parse response and load item retrieving from response
+        :param selector: Selector used to extract data from response
+        :param response: Response from scrapping
+        :return: News Item
+        """
         loader = NewsLoader(NewsItem(), selector)
         loader.add_value('domain', self.get_base_domain(response.url))
         loader.add_value('link', response.url)

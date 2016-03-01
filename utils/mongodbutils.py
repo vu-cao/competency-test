@@ -3,7 +3,7 @@ import pymongo
 
 
 class MongoDBUtils(object):
-    """ Utility class to support operation with MongoDB """
+    """ Utility class to support operations with MongoDB """
 
     @classmethod
     def create_connection_string(cls, server, port, username, password):
@@ -30,6 +30,12 @@ class MongoDBUtils(object):
 
     @classmethod
     def get_collection(cls, client, database, collection):
+        """ Get MongoDB collection
+        :param client: MongoClient object
+        :param database: Database name
+        :param collection: Collection name
+        :return: MongoDB collection
+        """
         db = client[database]
         return db[collection]
 

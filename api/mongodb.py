@@ -5,12 +5,22 @@ import os.path
 import getopt
 import pymongo
 
+import json
 from bson.json_util import dumps
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from scrapy.conf import settings
 from utils.mongodbutils import MongoDBUtils
+
+
+date_format = "%d %B %Y"
+
+
+class News(object):
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
 
 class Usage(Exception):
@@ -58,7 +68,19 @@ def main(argv=None):
     if url:
         filters.update({'link': url})
     sorts = [('date', pymongo.ASCENDING)]
-    print MongoDBUtils.search(collection, filters, sorts)
+    results = MongoDBUtils.search(collection, filters, sorts)
+
+    jsons = []
+    for result in results:
+        args = {}
+        for key in result:
+            if key == 'date':
+                value = result['date'].strftime(date_format)
+                args.update({key: value})
+            else:
+                args.update({key: result[key]})
+        jsons.append(News(**args))
+        print json.dumps([news.__dict__ for news in jsons])
 
 
 if __name__ == "__main__":
