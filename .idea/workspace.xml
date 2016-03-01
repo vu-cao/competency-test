@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2af54426-75a8-4c3a-b30b-8bf78705a28e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/news.py" afterPath="$PROJECT_DIR$/api/news.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/isentia/pipelines.py" afterPath="$PROJECT_DIR$/isentia/pipelines.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/isentia/settings.py" afterPath="$PROJECT_DIR$/isentia/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/testisentiaspider.py" afterPath="$PROJECT_DIR$/tests/testisentiaspider.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/testmongodbpipeline.py" afterPath="$PROJECT_DIR$/tests/testmongodbpipeline.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/testmongodbutils.py" afterPath="$PROJECT_DIR$/tests/testmongodbutils.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/api/mongodb.py" afterPath="$PROJECT_DIR$/api/settings.py" />
-    </list>
+    <list default="true" id="2af54426-75a8-4c3a-b30b-8bf78705a28e" name="Default" comment="" />
     <ignored path="isentia.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -494,9 +484,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17864583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17864583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32896176" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
