@@ -1,10 +1,14 @@
+import sys
+import os.path
+
 import web
 import pymongo
 
 import json
 
-from scrapy.conf import settings
+import settings
 
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from utils.mongodbutils import MongoDBUtils
 
 
@@ -18,9 +22,9 @@ urls = (
 
 class IsentiaApplication(web.application):
     """ Subclass web.application to set default address 127.0.0.1 """
-    def run(self, port=8080, *middleware):
+    def run(self, port=settings.SERVER_PORT, *middleware):
         func = self.wsgifunc(*middleware)
-        return web.httpserver.runsimple(func, ('127.0.0.1', port))
+        return web.httpserver.runsimple(func, (settings.SERVER_ADDRESS, port))
 
 
 class News(object):
@@ -37,10 +41,10 @@ class Base(object):
         :return: MongoDB collection
         """
         connection_string = MongoDBUtils.create_connection_string(
-                settings['MONGODB_SERVER'], settings['MONGODB_PORT'],
-                settings['MONGODB_USER'], settings['MONGODB_PASSWORD'])
+                settings.MONGODB_SERVER, settings.MONGODB_PORT,
+                settings.MONGODB_USER, settings.MONGODB_PASSWORD)
         client = MongoDBUtils.connect(connection_string)
-        collection = MongoDBUtils.get_collection(client, settings['MONGODB_DB'], settings['MONGODB_COLLECTION'])
+        collection = MongoDBUtils.get_collection(client, settings.MONGODB_DB, settings.MONGODB_COLLECTION)
 
         return collection
 
@@ -54,13 +58,12 @@ class Base(object):
         # Default date format is %d %B %Y
         date_format = "%d %B %Y"
 
-
         for result in results:
             args = {}
             for key in result:
                 if key == 'date':
                     # Convert BSON datetime to string
-                    value = result['date'].strftime(settings['DATE_FORMAT'] or date_format)
+                    value = result['date'].strftime(settings.DATE_FORMAT or date_format)
                     args.update({key: value})
                 else:
                     args.update({key: result[key]})

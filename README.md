@@ -6,8 +6,6 @@
 Provide solution for the [Data Engineer Competency Test](https://github.com/abhishek-isentia/Competency-Test/blob/master/Data-Engineer-Test.md)
 
 ## Frameworks Used##
-
-
 - [scrapy](www.scrapy.org) 1.0.5
 - pymongo 3.2.1
 - [mongomock](https://pypi.python.org/pypi/mongomock/2.0.0) 2.0.0
@@ -22,7 +20,7 @@ Provide solution for the [Data Engineer Competency Test](https://github.com/abhi
 	- responses: Mock response for scrapy code test
 - utils: Utilities classes
 
-## Important classes ##
+## Important classes/modules ##
 - `isentia.spiders.isentiaspider.IsentiaSpider`: Scrapy spider class to scrap information
 - `isentia.items.NewsItem`: News model.
 - `isentia.items.NewsLoader`: Loader to populate data into NewsItem
@@ -30,10 +28,34 @@ Provide solution for the [Data Engineer Competency Test](https://github.com/abhi
 - `utils.mongodbutils.MongoDBUtils`: Utilities class supporting MongoDB operations
 - `api.news`: Module contains classes for REST API.
 
+## APIs ##
+There are 3 APIs which can be used to retrieve data
+
+- `GET - /news/domain/{domain}`: Retrieve data filtered by domain
+- `GET - /news/url/{url}`: Retrieve data filtered by url
+- `GET - /news/domain/{domain}/url/{url}`: Retrieve data filtered by both domain and url
+The data returned by all 3 apis is sorted by date
+
+*Note*: The filter values (domain, url) are used like LIKE %domain%, LIKE %url%.  
+
 ## Solution ##
+Scrapy will:
 
+1. With a url, go to a web page
+2. Feed response from a web page to `NewsLoader`
+3. Based on XPath expression defined, `NewsLoader` will extract data from response and populate them to `NewsItem`
+4. Each `NewsItem` populated will go through pipelines, here we only have 1 pipeline (`MongoDBPipeline`). `MongoDBPipeline` will save `NewsItem` into DB.
+5. Based on `FOLLOWING_LINK_PATTERNS`, `WEB_DOMAIN`, `FOLLOW_LINK` and `DEPTH_LIMIT`, Scrapy will decide if it should follow a link in a current page.
+6. If there're still links to follow, back to 1; if not stop.
 
-## Configuration settings ##
+*Note*: 
+
+- If `START_URLS_INCLUDED` is `False`, response from urls in `WEB_START_URLS` are not processed.
+- If a page was already processed, it will not processed again.
+
+## Scrapy Configuration settings ##
+These configuration settings are defined in `isentia.settings` module
+
 - `DOWNLOAD_DELAY`: Delay time between 2 requests. Default is 5 seconds
 - `MONGODB_SERVER`: Address of MongoDB. Default is `aws-us-east-1-portal.14.dblayer.com`. This is [compose.io](http://compose.io) server
 - `MONGODB_PORT`: Port number of MongoDB. Default is `10208`
@@ -50,12 +72,25 @@ Provide solution for the [Data Engineer Competency Test](https://github.com/abhi
 - `FIELD_CATEGORY_NODE`: XPath expression of node contains category information.
 - `FIELD_INTRODUCTION_NODE`: XPath expression of node contains introduction information.
 - `FIELD_CONTENT_NODE`: XPath expression of nodes contains main content.
-- `DATE_FORMAT`: Format of date
-- `START_URLS_INCLUDED`: True if you want to scrap urls in WEB\_START\_URLS; False if not
+- `DATE_FORMAT`: Format of date. Default is `%d %B %Y`
+- `START_URLS_INCLUDED`: `True` if you want to scrap urls in WEB\_START\_URLS; `False` if not
 - `FOLLOW_LINK`: True if you want to follow links in a page.
 - `DEPTH_LIMIT`: Number of levels you want to follow.
-- `FOLLOWING_LINK_PATTERNS`: Regular expression patterns of links to follow. Scrapy only follow a link if it matches these patterns 
+- `FOLLOWING_LINK_PATTERNS`: Regular expression patterns of links to follow. Scrapy only follow a link if it matches these patterns
 
+## API configuration settings ##
+These configuration settings are defined in `api.settings` module
+
+- `MONGODB_SERVER`: Address of MongoDB. Default is `aws-us-east-1-portal.14.dblayer.com`. This is [compose.io](http://compose.io) server
+- `MONGODB_PORT`: Port number of MongoDB. Default is `10208`
+- `MONGODB_DB`: MongoDB database name. Default is `isentia`
+- `MONGODB_COLLECTION`: MongoDB collection name. Default is `news`
+- `MONGODB_USER`: MongoDB user name.
+- `MONGODB_PASSWORD`: MongoDB password
+- `DATE_FORMAT`: Format of date. Default is `%d %B %Y`
+- `SERVER_ADDRESS`: Default web server address. Default is `127.0.0.1`
+- `SERVER_PORT`: Default web server port. Default is `8080`
+ 
 ## Execution ##
 1. **Scrapping web:**
 	1. Go to `isentia` folder

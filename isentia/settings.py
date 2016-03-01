@@ -124,6 +124,7 @@ FIELD_INTRODUCTION_NODE = ".//div[@class='story-body__inner']/p[@class='story-bo
 # Node for content
 FIELD_CONTENT_NODE = ".//div[@class='story-body__inner' and @property='articleBody']/*[self::p|self::h1|self::h2|self::h3|self::h4][text()]"
 
+# Format of date
 DATE_FORMAT = "%d %B %Y"
 # Settings for following links
 # Do you want to scrap start_urls?

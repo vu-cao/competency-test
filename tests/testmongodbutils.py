@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import unittest
-import pymongo
 import sys
 import os.path
+
+import unittest
+import pymongo
 
 import mongomock
 

@@ -4,16 +4,15 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-
 import sys
 import os.path
+
 import logging
 
 from scrapy.conf import settings
 from scrapy.exceptions import DropItem
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
 from utils.mongodbutils import MongoDBUtils
 
 
